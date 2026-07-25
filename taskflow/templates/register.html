@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — TaskFlow</title>
+<style>
+  :root{
+    --navy: #0f172a;
+    --navy-2: #16213e;
+    --blue: #3b5fe2;
+    --blue-light: #5b7cf5;
+    --bg: #f4f6fb;
+    --text: #1e2333;
+    --muted: #6b7280;
+    --border: #e2e5ee;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  body{
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 40px 20px;
+  }
+
+  .wrapper{
+    width:100%;
+    max-width: 460px;
+    background:#fff;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(15,23,42,0.12);
+    overflow:hidden;
+  }
+
+  .form-panel{
+    padding: 48px 44px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+
+  .mini-logo{
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+    margin-bottom: 18px;
+  }
+  .mini-logo::before{
+    content:"";
+    display:inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--blue);
+    margin-right: 8px;
+  }
+
+  .form-header{ margin-bottom: 24px; }
+  .form-header h1{
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .form-header p{
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .form-header p a{
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration:none;
+  }
+  .form-header p a:hover{ text-decoration:underline; }
+
+  .messages{ margin-bottom: 18px; }
+  .msg{
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+  }
+  .msg.error{
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+  }
+  .msg.success{
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+  }
+
+  form{ display:flex; flex-direction:column; gap: 18px; }
+
+  .field{ position:relative; }
+
+  .field label{
+    display:block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .field input{
+    width:100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--text);
+    background: #fbfbfe;
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+
+  .field input::placeholder{ color: #a6acbe; }
+
+  .field input:focus{
+    outline:none;
+    border-color: var(--blue);
+    background:#fff;
+    box-shadow: 0 0 0 4px rgba(59,95,226,0.12);
+  }
+
+  .toggle-pass{
+    position:absolute;
+    right: 14px;
+    top: 38px;
+    cursor:pointer;
+    font-size: 12px;
+    font-weight:600;
+    color: var(--muted);
+    user-select:none;
+  }
+  .toggle-pass:hover{ color: var(--blue); }
+
+  .strength{
+    height: 5px;
+    border-radius: 4px;
+    background: var(--border);
+    margin-top: 8px;
+    overflow:hidden;
+  }
+  .strength-bar{
+    height:100%;
+    width: 0%;
+    border-radius: 4px;
+    background: #e11d48;
+    transition: width .3s ease, background .3s ease;
+  }
+  .strength-label{
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .terms{
+    display:flex;
+    align-items:flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height:1.4;
+  }
+  .terms input{ margin-top: 3px; accent-color: var(--blue); cursor:pointer; }
+  .terms a{ color: var(--blue); font-weight:600; text-decoration:none; }
+  .terms a:hover{ text-decoration:underline; }
+
+  .btn-register{
+    margin-top: 4px;
+    padding: 13px;
+    border:none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-light));
+    color:#fff;
+    font-size: 15px;
+    font-weight:700;
+    cursor:pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+    box-shadow: 0 10px 24px rgba(59,95,226,0.28);
+  }
+  .btn-register:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px rgba(59,95,226,0.35); }
+  .btn-register:active{ transform: translateY(0); }
+
+  @media (max-width: 520px){
+    .form-panel{ padding: 36px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="form-panel">
+    <div class="form-header">
+      <div class="mini-logo">TaskFlow</div>
+      <h1>Create your account</h1>
+      <p>Already have one? <a href="{% url 'login' %}">Log in instead</a></p>
+    </div>
+
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="msg {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="POST" action="{% url 'register' %}" id="registerForm">
+      {% csrf_token %}
+
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="alikhan" required>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="field">
+        <label for="password1">Password</label>
+        <input type="password" id="password1" name="password1" placeholder="Create a password" required>
+        <span class="toggle-pass" onclick="togglePassword('password1', this)">Show</span>
+        <div class="strength"><div class="strength-bar" id="strengthBar"></div></div>
+        <div class="strength-label" id="strengthLabel">Use 8+ characters with letters & numbers</div>
+      </div>
+
+      <div class="field">
+        <label for="password2">Confirm password</label>
+        <input type="password" id="password2" name="password2" placeholder="Re-enter password" required>
+        <span class="toggle-pass" onclick="togglePassword('password2', this)">Show</span>
+      </div>
+
+      <label class="terms">
+        <input type="checkbox" required>
+        I agree to TaskFlow's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+      </label>
+
+      <button type="submit" class="btn-register">Create account</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function togglePassword(id, el){
+    const input = document.getElementById(id);
+    if(input.type === "password"){
+      input.type = "text";
+      el.textContent = "Hide";
+    } else {
+      input.type = "password";
+      el.textContent = "Show";
+    }
+  }
+
+  const passwordInput = document.getElementById('password1');
+  const strengthBar = document.getElementById('strengthBar');
+  const strengthLabel = document.getElementById('strengthLabel');
+
+  passwordInput.addEventListener('input', () => {
+    const val = passwordInput.value;
+    let score = 0;
+    if(val.length >= 8) score++;
+    if(/[A-Z]/.test(val)) score++;
+    if(/[0-9]/.test(val)) score++;
+    if(/[^A-Za-z0-9]/.test(val)) score++;
+
+    const levels = [
+      {width:"0%",  color:"#e5e7eb", label:"Use 8+ characters with letters & numbers"},
+      {width:"25%", color:"#e11d48", label:"Weak password"},
+      {width:"50%", color:"#f59e0b", label:"Fair password"},
+      {width:"75%", color:"#3b5fe2", label:"Good password"},
+      {width:"100%",color:"#16a34a", label:"Strong password"}
+    ];
+    const lvl = levels[val.length === 0 ? 0 : score];
+    strengthBar.style.width = lvl.width;
+    strengthBar.style.background = lvl.color;
+    strengthLabel.textContent = lvl.label;
+  });
+</script>
+
+</body>
+</html>

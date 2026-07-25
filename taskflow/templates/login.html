@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TaskFlow</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-header">
+
+            <h1>TaskFlow</h1>
+
+            <p>Welcome Back 👋</p>
+
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="input-box">
+
+                <label>Username</label>
+
+                <input type="text" name="username" placeholder="Enter your username" required>
+
+            </div>
+
+            <div class="input-box">
+
+                <label>Password</label>
+
+                <input type="password" name="password" placeholder="Enter your password" required>
+
+            </div>
+
+            <button type="submit" class="login-submit">
+
+                Login
+
+            </button>
+
+        </form>
+
+        <div class="extra-links">
+
+            <a href="#">Forgot Password?</a>
+
+            <p>
+
+                Don't have an account?
+
+                <a href="{% url 'register' %}">
+
+                    Register
+
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
