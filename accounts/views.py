@@ -5,11 +5,14 @@ from django.contrib import messages
 
 
 def register_view(request):
+
     if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-        password1 = request.POST["password1"]
-        password2 = request.POST["password2"]
+
+        full_name = request.POST.get("full_name")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
 
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
@@ -19,11 +22,18 @@ def register_view(request):
             messages.error(request, "Username already exists.")
             return redirect("register")
 
-        User.objects.create_user(
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists.")
+            return redirect("register")
+
+        user = User.objects.create_user(
             username=username,
             email=email,
             password=password1
         )
+
+        user.first_name = full_name
+        user.save()
 
         messages.success(request, "Account created successfully.")
         return redirect("login")
@@ -33,10 +43,13 @@ def register_view(request):
 
 def login_view(request):
 
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+
     if request.method == "POST":
 
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
         user = authenticate(
             request,
@@ -48,11 +61,11 @@ def login_view(request):
 
             login(request, user)
 
+            messages.success(request, f"Welcome {user.first_name or user.username}")
+
             return redirect("dashboard")
 
-        else:
-
-            messages.error(request, "Invalid username or password.")
+        messages.error(request, "Invalid username or password.")
 
     return render(request, "login.html")
 
@@ -60,5 +73,7 @@ def login_view(request):
 def logout_view(request):
 
     logout(request)
+
+    messages.success(request, "Logged out successfully.")
 
     return redirect("login")

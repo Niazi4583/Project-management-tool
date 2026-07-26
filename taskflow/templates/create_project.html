@@ -1,70 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Project</title>
 
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body{
-            font-family:Arial,sans-serif;
-            background:#f4f4f4;
-        }
+<title>Create Project | TaskFlow</title>
 
-        .container{
-            width:500px;
-            margin:60px auto;
-            background:white;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,.1);
-        }
 
-        h2{
-            text-align:center;
-            color:#2563eb;
-        }
+<style>
 
-        input,textarea{
-            width:100%;
-            padding:10px;
-            margin-top:10px;
-            margin-bottom:20px;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
 
-        button{
-            width:100%;
-            padding:12px;
-            background:#2563eb;
-            color:white;
-            border:none;
-            border-radius:5px;
-            cursor:pointer;
-        }
 
-    </style>
+body{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:
+    linear-gradient(
+        135deg,
+        #020617,
+        #111827,
+        #1e1b4b
+    );
+
+    color:white;
+
+}
+
+
+
+
+.container{
+
+    width:480px;
+
+    padding:45px;
+
+
+    background:
+
+    rgba(17,24,39,0.95);
+
+
+    border-radius:25px;
+
+
+    border:1px solid #334155;
+
+
+    box-shadow:
+
+    0 25px 70px rgba(0,0,0,.6);
+
+
+}
+
+
+
+
+.logo{
+
+    text-align:center;
+
+    font-size:40px;
+
+    font-weight:900;
+
+
+    color:#60a5fa;
+
+
+    margin-bottom:10px;
+
+}
+
+
+
+.subtitle{
+
+    text-align:center;
+
+    color:#94a3b8;
+
+    margin-bottom:35px;
+
+}
+
+
+
+
+label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#e2e8f0;
+
+    font-weight:600;
+
+}
+
+
+
+
+input,
+textarea,
+select{
+
+
+    width:100%;
+
+
+    padding:14px;
+
+
+    margin-bottom:18px;
+
+
+    background:#020617;
+
+
+    color:white;
+
+
+    border:1px solid #334155;
+
+
+    border-radius:12px;
+
+
+    outline:none;
+
+
+}
+
+
+
+
+input:focus,
+textarea:focus,
+select:focus{
+
+
+    border-color:#60a5fa;
+
+
+    box-shadow:
+
+    0 0 12px rgba(96,165,250,.4);
+
+
+}
+
+
+
+textarea{
+
+    height:110px;
+
+    resize:none;
+
+}
+
+
+
+
+button{
+
+
+    width:100%;
+
+
+    padding:15px;
+
+
+    border:none;
+
+
+    border-radius:14px;
+
+
+    background:
+
+
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+
+    color:white;
+
+
+    font-size:17px;
+
+
+    font-weight:700;
+
+
+    cursor:pointer;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+button:hover{
+
+
+    transform:translateY(-3px);
+
+
+    box-shadow:
+
+    0 15px 30px rgba(37,99,235,.35);
+
+
+}
+
+
+
+
+.back{
+
+    text-align:center;
+
+    margin-top:25px;
+
+}
+
+
+
+.back a{
+
+    color:#60a5fa;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+}
+
+
+
+</style>
+
 
 </head>
+
+
+
 <body>
+
 
 <div class="container">
 
-    <h2>Create Project</h2>
 
-    <form method="POST">
+<div class="logo">
+TaskFlow
+</div>
 
-        {% csrf_token %}
 
-        {{ form.as_p }}
+<div class="subtitle">
+Create your project workspace 🚀
+</div>
 
-        <button type="submit">
-            Create Project
-        </button>
 
-    </form>
+
+<form method="POST">
+
+{% csrf_token %}
+
+
+
+<label>
+Project Name
+</label>
+
+<input
+type="text"
+name="name"
+placeholder="Enter project name"
+required>
+
+
+
+
+<label>
+Description
+</label>
+
+<textarea
+name="description"
+placeholder="Project description">
+</textarea>
+
+
+
+
+<label>
+Status
+</label>
+
+<select name="status">
+
+<option value="Planning">
+Planning
+</option>
+
+
+<option value="Progress">
+In Progress
+</option>
+
+
+<option value="Completed">
+Completed
+</option>
+
+
+</select>
+
+
+
+
+<label>
+Progress %
+</label>
+
+<input
+type="number"
+name="progress"
+value="0"
+min="0"
+max="100">
+
+
+
+
+
+<label>
+Project Color
+</label>
+
+<input
+type="color"
+name="color"
+value="#2563eb">
+
+
+
+
+
+<button type="submit">
+Create Project ✨
+</button>
+
+
+
+</form>
+
+
+
+
+<div class="back">
+
+<a href="{% url 'dashboard' %}">
+← Back to Dashboard
+</a>
 
 </div>
 
+
+</div>
+
+
 </body>
+
 </html>
